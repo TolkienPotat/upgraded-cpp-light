@@ -116,7 +116,7 @@ void testState::computeShadows(point light, square s)
                 {
                     // glm::vec4 v(0.5, 0.5, 0.5, 1.0);
                     double x = 1.0 - 45.0 * std::min(abs(slope - maxSlope) / (maxSlope - minSlope), abs(slope - minSlope) / (maxSlope - minSlope));
-
+                //test
                     glm::vec4 v(x, x, x, 1.0);
                     shadowMap[int(i * 1920 + j)] = v;
                 }
