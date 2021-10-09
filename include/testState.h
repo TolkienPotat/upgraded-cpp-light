@@ -77,7 +77,7 @@ void testState::computeShadows(point light, square s)
     double minSlope;
     point min;
     point max;
-    // squared sh;
+    // square sh;
 
     for (int i = 0; i < 4; i++)
     {
