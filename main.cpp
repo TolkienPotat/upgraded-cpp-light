@@ -9,8 +9,9 @@
 #include <time.h>
 // #include <object.h>
 #include <testObject.h>
-#include <testState.h>
-#include <state2.h>
+// #include <testState.h>
+
+#include <testState2.h>
 
 GLFWwindow *window;
 int wWidth = 1920;
@@ -96,7 +97,7 @@ int main()
     glBlendEquation(GL_FUNC_ADD); // this is default
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    testState state("./vertexShader.vs", "./fragmentShader.fs");
+    testState2 state("./vertexShader.vs", "./fragmentShader.fs");
     // state2 state("./vertexShader.vs","./fragmentShader.fs");
 
     double delta = 0;

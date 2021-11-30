@@ -5,6 +5,7 @@
 #include <shader.h>
 #include <iostream>
 #include <vertex.h>
+#include <circle.h>
 
 class objectRenderer
 {
@@ -19,6 +20,7 @@ public:
     void setRenderRatio(float ratio);
     void drawTriangleStrip(point verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
+    void drawCircle(circleObject c);
 };
 
 objectRenderer::objectRenderer(const char *vertPath, const char *fragPath)
@@ -54,4 +56,15 @@ void objectRenderer::render(object o)
 
     renderman.drawRectReadable(o.getX(), o.getY(), float(o.getTexture().width) * o.getScale() * renderRatio, float(o.getTexture().height) * o.getScale(), 1.0f, 1.0f, 1.0f);
 }
+
+void objectRenderer::drawCircle(circleObject c)
+{
+
+    for (int i = 0; i < c.numSegments - 1; i++)
+    {
+        renderman.drawTriangle(c.center, c.vertices[i], c.vertices[i + 1]);
+    }
+    renderman.drawTriangle(c.center, c.vertices[c.numSegments - 1], c.vertices[0]);
+}
+
 #endif
