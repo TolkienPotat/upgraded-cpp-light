@@ -79,7 +79,7 @@ void init(GLFWwindow *window)
 int main()
 {
 
-    if (!glfwInit())
+    if (!glfwInit()) 
     {
         // Initialization failed
         std::cout << "Init Failed"

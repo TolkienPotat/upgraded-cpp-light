@@ -16,9 +16,14 @@ class testState2 : public state
 {
 private:
     /* data */
-    circleObject circle;
-    circleObject circle2;
+    
     float renderRatio;
+    std::vector<circleObject> stat;
+    std::vector<circleObject> circles;
+    int cooldown = 0;
+    bool mouseDown = false;
+    double cDownX;
+    double cDownY;
 
 public:
     testState2(const char *vertPath, const char *fragPath);
@@ -31,35 +36,101 @@ public:
 
 void testState2::tick(GLFWwindow *window)
 {
-   
-    
-    // if (circle.center.getX() + renderRatio * circle.radius > 1 || circle.center.getX() - renderRatio * circle.radius < -1)
-    //     circle.xVel = -circle.xVel;
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && cooldown == 0 && !mouseDown)
+    {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        y = 1 - (2 * (1 - (y / 1080)));
+        x = 1 - (2 * (x / 1920));
+        mouseDown = true;
+        cDownX = x;
+        cDownY = y;
+        std::cout << "mousedown\n";
+        cooldown = 30;
+    }
+    if (mouseDown && !glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
+    {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        y = 1 - (2 * (1 - (y / 1080)));
+        x = 1 - (2 * (x / 1920));
+        circleObject c(100, -x, -y, 0.15, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 100000, 0.2, 0.2, 0.7);
+        //    c.xVel, c.yVel = 0;
+        c.xVel = (x - cDownX)/100.0;
+        c.yVel = (y - cDownY)/100.0;
+        circles.push_back(c);
+        std::cout << "mouseup\n";
+        mouseDown = false;
 
-    // if (circle.center.getY() + circle.radius > 1 || circle.center.getY() - circle.radius < -1)
-    //     circle.yVel = -circle.yVel;
-    circle.tick(window);
-    circle.gravTransform(circle2);
-    std::cout << circle.center.getX() << " " << circle.center.getY() << "\n";
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) && cooldown == 0)
+    {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        y = 1 - (2 * (1 - (y / 1080)));
+        x = 1 - (2 * (x / 1920));
+        circleObject c(100, -x, -y, 0.20, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 500000, 0.7, 0.2, 0.2);
+        c.xVel, c.yVel = 0;
+        stat.push_back(c);
+        cooldown = 30;
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE))
+    {
+        circles.clear();
+        stat.clear();
+    }
+
+    for (int i = 0; i < circles.size(); i++)
+    {
+        circles[i].tick(window);
+    }
+
+    for (int i = 0; i < circles.size(); i++)
+    {
+       
+        for (int j = 0; j < circles.size(); j++)
+        {
+            if (j == i)
+                continue;
+
+            circles[i].gravTransform(circles[j]);
+        }
+
+        for (int j = 0; j < stat.size(); j++)
+        {
+            circles[i].gravTransform(stat[j]);
+        }
+    }
+
+    if (cooldown > 0)
+        cooldown--;
 }
 
 void testState2::render()
 {
-    rend.drawCircle(circle);
-    rend.drawCircle(circle2);
+    
+    for (int i = 0; i < circles.size(); i++)
+    {
+        rend.drawCircle(circles[i]);
+    }
+    for (int i = 0; i < stat.size(); i++)
+    {
+        rend.drawCircle(stat[i]);
+    }
+   
 }
 
 void testState2::init()
 {
-    circle.xVel = 0.0;
-    circle.yVel = 0.0;
+    
 }
 
-testState2::testState2(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), circle(1000, 0.5, 0.5, 0.25, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 1), circle2(1000, 0, 0, 0.25, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 1)
+testState2::testState2(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     rend.setRenderRatio(renderRatio);
     std::cout << renderRatio << "\n";
+    
 
     init();
 }

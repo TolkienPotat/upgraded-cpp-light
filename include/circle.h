@@ -18,18 +18,18 @@ public:
     float radius;
     float xVel, yVel = 0;
     int mass;
-    circleObject(int numSegments, int x, int y, float radius, float squish, int mass);
+    circleObject(int numSegments, float x, float y, float radius, float squish, int mass, double r, double g, double b);
     ~circleObject();
     int transform(float dx, float dy);
     int gravTransform(circleObject c);
     void tick(GLFWwindow *window);
 };
 
-circleObject::circleObject(int numSegments, int x, int y, float radius, float squish, int mass) : vertices(numSegments)
+circleObject::circleObject(int numSegments, float x, float y, float radius, float squish, int mass, double r, double g, double b) : vertices(numSegments)
 {
-    float r = .7;
-    float g = .7;
-    float b = .9;
+    std::cout  << x << y << "\n";
+    
+    
     this->mass = mass;
     float segsPerQuarter = numSegments / 4;
     for (int i = 0; i < segsPerQuarter; i++)
@@ -63,7 +63,8 @@ circleObject::circleObject(int numSegments, int x, int y, float radius, float sq
         float dy = radius * std::sin(angle);
         vertices[segsPerQuarter - 1 - i + (3 * segsPerQuarter)].setAll(x + dx * squish, y - dy, 0, r, g, b, 1, 1);
     }
-    center.setAll(x, y, 0, 1, 1, 1, 1, 1);
+    center.setAll(x, y, 0, r + 0.2, g + 0.2, b + 0.2, 1, 1);
+    std::cout  << x << y << "\n";
     this->numSegments = numSegments;
     this->radius = radius;
 }
@@ -85,12 +86,22 @@ void circleObject::tick(GLFWwindow *window)
 
 int circleObject::gravTransform(circleObject c)
 {
-    float xDist = std::abs(center.getX()) - std::abs(c.center.getX());
-    float yDist = std::abs(center.getY()) - std::abs(c.center.getY());
+    
+    float xDist = center.getX() - c.center.getX();
+    float yDist = center.getY() - c.center.getY();
+    
+    
     float dist = std::sqrt(xDist * xDist + yDist * yDist);
-    float force = GRAVITY_CONST * ((mass * c.mass) / (dist * dist));
+    float force = GRAVITY_CONST * ((long(mass) * long(c.mass)) / (dist * dist));
     float vel = force/mass;
-    float angle = std::atan2(yDist, xDist);
+    std::cout << vel << " vel\n";
+    // if (yDist < 0 && xDist < 0)
+    // {
+    //     yDist = -yDist;
+    //     xDist = -xDist;
+    // }
+    float angle = std::atan2(-yDist, -xDist);
+
     float dYVel = vel * std::sin(angle);
     float dXVel = vel * std::cos(angle);
     xVel += dXVel;

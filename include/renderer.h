@@ -5,6 +5,7 @@
 #include <shader.h>
 #include <point.h>
 #include <vertex.h>
+#include <cstring>
 
 class renderer
 
@@ -54,7 +55,7 @@ public:
     void drawRect(float verts[32]);
     void drawRectReadable(float x, float y, float width, float height, float r, float g, float b);
     renderer();
-    void drawTriangleStrip(point p[], int size, float r, float g, float b);
+    void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
 };
 
@@ -64,21 +65,17 @@ void renderer::init(const char *vertPath, const char *fragPath)
     setupBufferObjects();
 }
 
-void renderer::drawTriangleStrip(point p[], int size, float r, float g, float b)
+void renderer::drawTriangleStrip(vertex vertices[], int size, float r, float g, float b)
 {
 
     glDisable(GL_TEXTURE_2D);
     float verts[8 * size];
-    for (int i = 0; i < size; i++)
+    
+    for (int i = 0; i < size; i+=8)
     {
-        verts[8 * i] = p[i].x;
-        verts[8 * i + 1] = p[i].y;
-        verts[8 * i + 2] = 0;
-        verts[8 * i + 3] = r;
-        verts[8 * i + 4] = g;
-        verts[8 * i + 5] = b;
-        verts[8 * i + 6] = 0;
-        verts[8 * i + 7] = 0;
+        float* singleVert = vertices[i/8].getAll();
+        memcpy(verts + i, singleVert, 8);
+       
     }
 
     glBindVertexArray(VAO);

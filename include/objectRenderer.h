@@ -18,7 +18,7 @@ public:
     ~objectRenderer();
     void render(object o);
     void setRenderRatio(float ratio);
-    void drawTriangleStrip(point verts[], int size, float r, float g, float b);
+    void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
     void drawCircle(circleObject c);
 };
@@ -34,7 +34,7 @@ objectRenderer::~objectRenderer()
 {
 }
 
-void objectRenderer::drawTriangleStrip(point verts[], int size, float r, float g, float b)
+void objectRenderer::drawTriangleStrip(vertex verts[], int size, float r, float g, float b)
 {
     renderman.drawTriangleStrip(verts, size, r, g, b);
 }

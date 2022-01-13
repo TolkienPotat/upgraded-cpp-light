@@ -65,6 +65,11 @@ public:
         data[5] = b;
         data[6] = s;
         data[7] = t;
+        
+    }
+    float* getAll()
+    {
+        return data;
     }
 };
 
