@@ -45,7 +45,7 @@ void testState2::tick(GLFWwindow *window)
         mouseDown = true;
         cDownX = x;
         cDownY = y;
-        std::cout << "mousedown\n";
+        
         cooldown = 30;
     }
     if (mouseDown && !glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
@@ -59,7 +59,7 @@ void testState2::tick(GLFWwindow *window)
         c.xVel = (x - cDownX)/100.0;
         c.yVel = (y - cDownY)/100.0;
         circles.push_back(c);
-        std::cout << "mouseup\n";
+        
         mouseDown = false;
 
     }
@@ -72,6 +72,19 @@ void testState2::tick(GLFWwindow *window)
         circleObject c(100, -x, -y, 0.20, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 500000, 0.7, 0.2, 0.2);
         c.xVel, c.yVel = 0;
         stat.push_back(c);
+        cooldown = 30;
+    }
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_5) && cooldown == 0)
+    {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        y = 1 - (2 * (1 - (y / 1080)));
+        x = 1 - (2 * (x / 1920));
+        circleObject c(100, -x, -y, 0.20, float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width), 500000, 0.2, 0.7, 0.2);
+        c.xVel, c.yVel = 0;
+        c.mass = -c.mass;
+        stat.push_back(c);
+        
         cooldown = 30;
     }
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE))

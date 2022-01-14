@@ -18,6 +18,7 @@ public:
     float radius;
     float xVel, yVel = 0;
     int mass;
+    
     circleObject(int numSegments, float x, float y, float radius, float squish, int mass, double r, double g, double b);
     ~circleObject();
     int transform(float dx, float dy);
@@ -64,7 +65,7 @@ circleObject::circleObject(int numSegments, float x, float y, float radius, floa
         vertices[segsPerQuarter - 1 - i + (3 * segsPerQuarter)].setAll(x + dx * squish, y - dy, 0, r, g, b, 1, 1);
     }
     center.setAll(x, y, 0, r + 0.2, g + 0.2, b + 0.2, 1, 1);
-    std::cout  << x << y << "\n";
+    // std::cout  << x << y << "\n";
     this->numSegments = numSegments;
     this->radius = radius;
 }
@@ -94,12 +95,7 @@ int circleObject::gravTransform(circleObject c)
     float dist = std::sqrt(xDist * xDist + yDist * yDist);
     float force = GRAVITY_CONST * ((long(mass) * long(c.mass)) / (dist * dist));
     float vel = force/mass;
-    std::cout << vel << " vel\n";
-    // if (yDist < 0 && xDist < 0)
-    // {
-    //     yDist = -yDist;
-    //     xDist = -xDist;
-    // }
+    
     float angle = std::atan2(-yDist, -xDist);
 
     float dYVel = vel * std::sin(angle);
