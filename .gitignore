@@ -37,3 +37,5 @@ include/GLFW/
 include/glm-master/
 include/glad/
 include/lib/
+lib/
+
