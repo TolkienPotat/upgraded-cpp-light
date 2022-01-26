@@ -7,10 +7,7 @@
 #include <objectRenderer.h>
 #include <cstdlib>
 #include <time.h>
-// #include <object.h>
 #include <testObject.h>
-// #include <testState.h>
-
 #include <testState2.h>
 
 GLFWwindow *window;
