@@ -7,7 +7,7 @@
 #include <objectRenderer.h>
 #include <cstdlib>
 #include <time.h>
-#include <testObject.h>
+
 #include <GravitySimulation.h>
 
 GLFWwindow *window;

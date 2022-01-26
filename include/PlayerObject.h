@@ -1,12 +1,12 @@
-#ifndef TESTOBJECT_H
-#define TESTOBJECT_H
+#ifndef PLAYEROBJECT_H
+#define PLAYEROBJECT_H
 
 // #include <texture.h>
 // #include <renderer.h>
 #include <iostream>
 #include <object.h>
 
-class testObject : public object
+class player : public object
 {
 private:
     /* data */
@@ -65,7 +65,7 @@ public:
         if (y < -1)
             y = -1;
     }
-    testObject(const char *filePath) : object(filePath) {}
+    player(const char *filePath) : object(filePath) {}
 };
 
 #endif

@@ -2,7 +2,7 @@
 #define shadowSim_H
 #include <iostream>
 #include <state.h>
-#include <testObject.h>
+#include <PlayerObject.h>
 #include <blockObject.h>
 #include <vector>
 #include <algorithm>
@@ -17,7 +17,7 @@ class shadowSim : public state
 {
 private:
     /* data */
-    testObject person;
+    player person;
     blockObject blobject;
     vertex v1, v2, v3, v4;
     point light;
