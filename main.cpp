@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <time.h>
 #include <testObject.h>
-#include <testState2.h>
+#include <GravitySimulation.h>
 
 GLFWwindow *window;
 int wWidth = 1920;
@@ -94,8 +94,8 @@ int main()
     glBlendEquation(GL_FUNC_ADD); // this is default
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    testState2 state("./vertexShader.vs", "./fragmentShader.fs");
-    // state2 state("./vertexShader.vs","./fragmentShader.fs");
+    gravSim state("./vertexShader.vs", "./fragmentShader.fs");
+    
 
     double delta = 0;
     double last = 0;
@@ -109,7 +109,7 @@ int main()
     int numVertexesDrawn = 0;
 
     int cooldown = 0;
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    
     while (!glfwWindowShouldClose(window))
     {
         cooldown--;

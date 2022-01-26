@@ -1,18 +1,18 @@
-#ifndef TESTSTATE_H
-#define TESTSTATE_H
+#ifndef GRAVSIM
+#define GRAVSIM
 #include <iostream>
 #include <state.h>
 #include <circle.h>
 #include <vector>
 #include <algorithm>
-
+#include <SFML/Audio.hpp>
 
 struct square
 {
     point v[4];
 };
 
-class testState2 : public state
+class gravSim : public state
 {
 private:
     /* data */
@@ -26,15 +26,15 @@ private:
     double cDownY;
 
 public:
-    testState2(const char *vertPath, const char *fragPath);
-    ~testState2();
+    gravSim(const char *vertPath, const char *fragPath);
+    ~gravSim();
     virtual void tick(GLFWwindow *window);
     virtual void render();
     void init();
     void computeShadows(point light, square s);
 };
 
-void testState2::tick(GLFWwindow *window)
+void gravSim::tick(GLFWwindow *window)
 {
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) && cooldown == 0 && !mouseDown)
     {
@@ -119,7 +119,7 @@ void testState2::tick(GLFWwindow *window)
         cooldown--;
 }
 
-void testState2::render()
+void gravSim::render()
 {
     
     for (int i = 0; i < circles.size(); i++)
@@ -133,12 +133,12 @@ void testState2::render()
    
 }
 
-void testState2::init()
+void gravSim::init()
 {
-    std::cout << "Merely A Test?\n";
+    
 }
 
-testState2::testState2(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
+gravSim::gravSim(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     rend.setRenderRatio(renderRatio);
@@ -148,7 +148,7 @@ testState2::testState2(const char *vertPath, const char *fragPath) : state(vertP
     init();
 }
 
-testState2::~testState2()
+gravSim::~gravSim()
 {
 }
 

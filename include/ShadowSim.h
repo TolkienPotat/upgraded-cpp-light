@@ -1,19 +1,19 @@
-#ifndef TESTSTATE_H
-#define TESTSTATE_H
+#ifndef shadowSim_H
+#define shadowSim_H
 #include <iostream>
 #include <state.h>
 #include <testObject.h>
 #include <blockObject.h>
 #include <vector>
 #include <algorithm>
-#include <glm-master/glm/glm.hpp>
+#include <glm/glm.hpp>
 
 struct square
 {
     point v[4];
 };
 
-class testState : public state
+class shadowSim : public state
 {
 private:
     /* data */
@@ -27,15 +27,15 @@ private:
     float renderRatio;
 
 public:
-    testState(const char *vertPath, const char *fragPath);
-    ~testState();
+    shadowSim(const char *vertPath, const char *fragPath);
+    ~shadowSim();
     virtual void tick(GLFWwindow *window);
     virtual void render();
     void init();
     void computeShadows(point light, square s);
 };
 
-void testState::tick(GLFWwindow *window)
+void shadowSim::tick(GLFWwindow *window)
 {
 
     person.tick(window);
@@ -44,7 +44,7 @@ void testState::tick(GLFWwindow *window)
     computeShadows(light, box);
 }
 
-void testState::render()
+void shadowSim::render()
 {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, shadowMapID);
@@ -55,7 +55,7 @@ void testState::render()
     rend.render(blobject);
 }
 
-void testState::init()
+void shadowSim::init()
 {
     v1.setAll(1, 1, 0, 0.6, 0.5, 0.2, 1, 1);
     v2.setAll(1, -1, 0, 0.6, 0.5, 0.2, 1, 0);
@@ -70,7 +70,7 @@ void testState::init()
 
     computeShadows(light, box);
 }
-void testState::computeShadows(point light, square s)
+void shadowSim::computeShadows(point light, square s)
 {
     double slope;
     double maxSlope = 0;
@@ -174,7 +174,7 @@ void testState::computeShadows(point light, square s)
     // std::cout << "done\n";
 }
 
-testState::testState(const char *vertPath, const char *fragPath) : person("./hero.png"), state(vertPath, fragPath), blobject("./block.png")
+shadowSim::shadowSim(const char *vertPath, const char *fragPath) : person("./hero.png"), state(vertPath, fragPath), blobject("./block.png")
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     rend.setRenderRatio(renderRatio);
@@ -183,7 +183,7 @@ testState::testState(const char *vertPath, const char *fragPath) : person("./her
     init();
 }
 
-testState::~testState()
+shadowSim::~shadowSim()
 {
     delete[] shadowMap;
 }
