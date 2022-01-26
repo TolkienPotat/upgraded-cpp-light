@@ -135,7 +135,7 @@ void testState2::render()
 
 void testState2::init()
 {
-    
+    std::cout << "Merely A Test?\n";
 }
 
 testState2::testState2(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
