@@ -37,5 +37,7 @@ include/GLFW/
 include/glm-master/
 include/glad/
 include/lib/
+include/SFML/
 lib/
+test.wav
 

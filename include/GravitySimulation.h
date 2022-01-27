@@ -5,7 +5,6 @@
 #include <circle.h>
 #include <vector>
 #include <algorithm>
-#include <SFML/Audio.hpp>
 
 struct square
 {
@@ -31,7 +30,6 @@ public:
     virtual void tick(GLFWwindow *window);
     virtual void render();
     void init();
-    void computeShadows(point light, square s);
 };
 
 void gravSim::tick(GLFWwindow *window)
