@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vertex.h>
 #include <circle.h>
+#include <tileMap.h>
 
 class objectRenderer
 {
@@ -21,6 +22,7 @@ public:
     void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
     void drawCircle(circleObject c);
+    void drawMap(tileMap m);
 };
 
 objectRenderer::objectRenderer(const char *vertPath, const char *fragPath)
@@ -65,6 +67,17 @@ void objectRenderer::drawCircle(circleObject c)
         renderman.drawTriangle(c.center, c.vertices[i], c.vertices[i + 1]);
     }
     renderman.drawTriangle(c.center, c.vertices[c.numSegments - 1], c.vertices[0]);
+}
+
+void objectRenderer::drawMap(tileMap m)
+{
+
+    for (int i = 0; i < m.map.size(); i++)
+    {
+        m.tex[m.map[i]].bind();
+        renderman.drawRectReadable(i % m.width * m.tWidth - m.xOffset, std::floor(float(i)/m.width) * m.tHeight - m.yOffset, m.tWidth, m.tHeight, 1, 1, 1);
+    }
+
 }
 
 #endif
