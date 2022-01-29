@@ -126,6 +126,7 @@ void renderer::drawTriangle(vertex p1, vertex p2, vertex p3)
 
 void renderer::drawRect(float verts[32])
 {
+    glEnable(GL_TEXTURE_2D);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), verts, GL_DYNAMIC_DRAW);

@@ -17,7 +17,7 @@ class shadowSim : public state
 {
 private:
     /* data */
-    player person;
+    PlayerObject person;
     blockObject blobject;
     vertex v1, v2, v3, v4;
     point light;

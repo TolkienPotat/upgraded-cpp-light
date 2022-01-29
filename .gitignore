@@ -40,4 +40,5 @@ include/lib/
 include/SFML/
 lib/
 test.wav
+todo
 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <object.h>
 
-class player : public object
+class PlayerObject : public object
 {
 private:
     /* data */
@@ -65,7 +65,7 @@ public:
         if (y < -1)
             y = -1;
     }
-    player(const char *filePath) : object(filePath) {}
+    PlayerObject(const char *filePath) : object(filePath) {}
 };
 
 #endif

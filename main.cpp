@@ -8,8 +8,10 @@
 #include <cstdlib>
 #include <time.h>
 
-#include <GravitySimulation.h>
-// #include <audioTest.h>
+// #include <GravitySimulation.h>
+// #include <ShadowSim.h>
+#include <mainGameState.h>
+
 
 GLFWwindow *window;
 int wWidth = 1920;
@@ -95,8 +97,10 @@ int main()
     glBlendEquation(GL_FUNC_ADD); // this is default
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    gravSim state("./vertexShader.vs", "./fragmentShader.fs");
-    // audioState state("./vertexShader.vs", "./fragmentShader.fs");
+    // gravSim state("./vertexShader.vs", "./fragmentShader.fs");
+    gameState state("./vertexShader.vs", "./fragmentShader.fs");
+    // shadowSim state("./vertexShader.vs", "./fragmentShader.fs");
+    
 
     
 

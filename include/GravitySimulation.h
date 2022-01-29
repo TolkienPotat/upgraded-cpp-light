@@ -6,10 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-struct square
-{
-    point v[4];
-};
+
 
 class gravSim : public state
 {
