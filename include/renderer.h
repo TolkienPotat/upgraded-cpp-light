@@ -57,6 +57,7 @@ public:
     renderer();
     void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
+    void renderUnsizedArray(float arr[], int len);
 };
 
 void renderer::init(const char *vertPath, const char *fragPath)
@@ -126,7 +127,6 @@ void renderer::drawTriangle(vertex p1, vertex p2, vertex p3)
 
 void renderer::drawRect(float verts[32])
 {
-    glEnable(GL_TEXTURE_2D);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), verts, GL_DYNAMIC_DRAW);
@@ -150,6 +150,20 @@ void renderer::drawRectReadable(float x, float y, float width, float height, flo
         x, y + height, 0.0, r, g, b, 0.0, 1.0};
 
     drawRect(verts);
+}
+
+void renderer::renderUnsizedArray(float arr[], int len)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, len * sizeof(float), arr, GL_DYNAMIC_DRAW);
+    shader.use();
+    glBindVertexArray(VAO);
+
+    glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
+
+    glDrawElements(GL_TRIANGLES, len, GL_UNSIGNED_INT, 0);
+    
+    
 }
 
 renderer::renderer()

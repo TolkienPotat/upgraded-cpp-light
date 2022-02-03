@@ -55,7 +55,7 @@ void gameState::init()
     
 }
 
-gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/man.png")
+gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/traveller.png")
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     rend.setRenderRatio(renderRatio);

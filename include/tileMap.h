@@ -15,6 +15,7 @@ public:
     float yOffset = 0;
     std::vector<int> map;
     std::vector<texture> tex;
+    std::vector<std::vector<float>> vertices;
 
 public:
     int loadMap(const char *filePath)
@@ -26,7 +27,7 @@ public:
         stream >> height;
         stream >> tWidth;
         stream >> tHeight;
-        
+
         std::cout << width << height << tWidth << tHeight << "\n";
 
         std::string temp;
@@ -47,7 +48,7 @@ public:
             stream >> s;
             i++;
         }
-        
+
         int j = 0;
         while (j < width * height)
         {
@@ -55,9 +56,68 @@ public:
             stream >> t;
             map.push_back(std::stoi(t));
             j++;
-            
         }
+        for (int i = 0; i < tex.size(); i++)
+        {
+            std::vector<float> v;
+            vertices.push_back(v);
+        }
+        bakeArrays();
+        return 1;
+    }
 
+    int bakeArrays()
+    {
+        for (int i = 0; i < tex.size(); i++)
+        {
+            for (int j = 0; j < map.size(); j++)
+            {
+                if (map[j] == i)
+                {
+                    float x = float(j % width) * tWidth;
+                    std::cout << "X: " << x << "\n";
+                    float y = std::floor(float(j) / width) * tHeight;
+                    vertices[i].push_back(x + tWidth);
+                    vertices[i].push_back(y + tHeight);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+
+                    vertices[i].push_back(x + tWidth);
+                    vertices[i].push_back(y);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(0);
+
+                    vertices[i].push_back(x);
+                    vertices[i].push_back(y);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(0);
+                    vertices[i].push_back(0);
+
+                    vertices[i].push_back(x);
+                    vertices[i].push_back(y + tHeight);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(0);
+                    vertices[i].push_back(1);
+
+
+                }
+            }
+        std::cout << vertices[i].size() << "\n";
+        }
         return 1;
     }
 };
