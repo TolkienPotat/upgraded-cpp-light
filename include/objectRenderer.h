@@ -55,8 +55,8 @@ void objectRenderer::render(object o)
 {
 
     o.bind();
-
-    renderman.drawRectReadable(o.getX(), o.getY(), float(o.getTexture().width) * o.getScale() * renderRatio, float(o.getTexture().height) * o.getScale(), 1.0f, 1.0f, 1.0f);
+    renderman.drawRect(o.getVerts(), o.getTrans());
+    // renderman.drawRectReadable(o.getX(), o.getY(), float(o.getTexture().width) * o.getScale() * renderRatio, float(o.getTexture().height) * o.getScale(), 1.0f, 1.0f, 1.0f);
 }
 
 void objectRenderer::drawCircle(circleObject c)
@@ -72,17 +72,18 @@ void objectRenderer::drawCircle(circleObject c)
 void objectRenderer::drawMap(tileMap m)
 {
 
-    for (int i = 0; i < m.map.size(); i++)
-    {
-        m.tex[m.map[i]].bind();
-        renderman.drawRectReadable(i % m.width * m.tWidth - m.xOffset, std::floor(float(i) / m.width) * m.tHeight - m.yOffset, m.tWidth, m.tHeight, 1, 1, 1);
-    }
+    // for (int i = 0; i < m.map.size(); i++)
 
-    // for (int i = 0; i < m.vertices.size(); i++)
     // {
-    //     m.tex[i].bind();
-    //     renderman.renderUnsizedArray(&m.vertices[i][0], m.vertices[i].size());
+    //     m.tex[m.map[i]].bind();
+    //     renderman.drawRectReadable(i % m.width * m.tWidth - m.xOffset, std::floor(float(i) / m.width) * m.tHeight - m.yOffset, m.tWidth, m.tHeight, 1, 1, 1);
     // }
+
+    for (int i = 0; i < m.vertices.size(); i++)
+    {
+        m.tex[i].bind();
+        renderman.renderUnsizedArray(&m.vertices[i][0], m.vertices[i].size());
+    }
 }
 
 #endif

@@ -6,10 +6,17 @@
 #include <point.h>
 #include <vertex.h>
 #include <cstring>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class renderer
 
 {
+
+
+
+
 
 private:
     void setupRenderer(const char *vertPath, const char *fragPath)
@@ -41,6 +48,22 @@ private:
         glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 0);
         glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
         glUniform1i(glGetUniformLocation(shader.ID, "texture2"), 1);
+
+        // Projection
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(model));
+
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
+        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(model));
     }
 
 public:
@@ -52,13 +75,59 @@ public:
         1, 2, 3};
     unsigned int VBO, VAO, EBO;
     void init(const char *vertPath, const char *fragPath);
-    void drawRect(float verts[32]);
+    void drawRect(float verts[32], glm::mat4 trans);
     void drawRectReadable(float x, float y, float width, float height, float r, float g, float b);
     renderer();
     void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
     void renderUnsizedArray(float arr[], int len);
+
+
+float cubeVertices[288] = {
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f, 1, 1, 1,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f, 1, 1, 1,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+
+    -0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+     0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+     0.5f, -0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+     0.5f, -0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+     0.5f, -0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+     0.5f, -0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+    -0.5f, -0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+
+    -0.5f,  0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f,
+     0.5f,  0.5f, -0.5f, 1, 1, 1,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f, 1, 1, 1,  1.0f, 0.0f,
+    -0.5f,  0.5f,  0.5f, 1, 1, 1,  0.0f, 0.0f,
+    -0.5f,  0.5f, -0.5f, 1, 1, 1,  0.0f, 1.0f
 };
+};
+
 
 void renderer::init(const char *vertPath, const char *fragPath)
 {
@@ -71,12 +140,11 @@ void renderer::drawTriangleStrip(vertex vertices[], int size, float r, float g, 
 
     glDisable(GL_TEXTURE_2D);
     float verts[8 * size];
-    
-    for (int i = 0; i < size; i+=8)
+
+    for (int i = 0; i < size; i += 8)
     {
-        float* singleVert = vertices[i/8].getAll();
+        float *singleVert = vertices[i / 8].getAll();
         memcpy(verts + i, singleVert, 8);
-       
     }
 
     glBindVertexArray(VAO);
@@ -125,16 +193,33 @@ void renderer::drawTriangle(vertex p1, vertex p2, vertex p3)
     glEnable(GL_TEXTURE_2D);
 }
 
-void renderer::drawRect(float verts[32])
+void renderer::drawRect(float verts[32], glm::mat4 trans = glm::mat4(1.0f))
 {
-
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), verts, GL_DYNAMIC_DRAW);
 
     shader.use();
     glBindVertexArray(VAO);
 
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::rotate(model, glm::radians(320.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(model));
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(model));
+
+
+
     glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "trans"), 1, GL_FALSE, glm::value_ptr(trans));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -154,6 +239,7 @@ void renderer::drawRectReadable(float x, float y, float width, float height, flo
 
 void renderer::renderUnsizedArray(float arr[], int len)
 {
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, len * sizeof(float), arr, GL_DYNAMIC_DRAW);
     shader.use();
@@ -161,9 +247,8 @@ void renderer::renderUnsizedArray(float arr[], int len)
 
     glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
 
-    glDrawElements(GL_TRIANGLES, len, GL_UNSIGNED_INT, 0);
-    
-    
+    // glDrawElements(GL_TRIANGLES, len, GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_TRIANGLES, 0, len);
 }
 
 renderer::renderer()

@@ -34,7 +34,7 @@
 main
 test.cpp
 include/GLFW/
-include/glm-master/
+include/glm/
 include/glad/
 include/lib/
 include/SFML/

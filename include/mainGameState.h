@@ -43,7 +43,7 @@ void gameState::tick(GLFWwindow *window)
 
 void gameState::render()
 {
-    rend.drawMap(map);
+    // rend.drawMap(map);
     rend.render(player);
     
    

@@ -75,7 +75,7 @@ public:
                 if (map[j] == i)
                 {
                     float x = float(j % width) * tWidth;
-                    std::cout << "X: " << x << "\n";
+                    // std::cout << "X: " << x << "\n";
                     float y = std::floor(float(j) / width) * tHeight;
                     vertices[i].push_back(x + tWidth);
                     vertices[i].push_back(y + tHeight);
