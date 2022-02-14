@@ -23,6 +23,7 @@ public:
     void drawTriangle(vertex p1, vertex p2, vertex p3);
     void drawCircle(circleObject c);
     void drawMap(tileMap m);
+    void setViewMat(glm::mat4 view);
 };
 
 objectRenderer::objectRenderer(const char *vertPath, const char *fragPath)
@@ -84,6 +85,11 @@ void objectRenderer::drawMap(tileMap m)
         m.tex[i].bind();
         renderman.renderUnsizedArray(&m.vertices[i][0], m.vertices[i].size());
     }
+}
+
+void objectRenderer::setViewMat(glm::mat4 view)
+{
+    renderman.setViewMat(view);
 }
 
 #endif

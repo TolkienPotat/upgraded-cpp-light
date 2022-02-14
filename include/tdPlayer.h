@@ -49,7 +49,7 @@ public:
         if (dX < 0.01 && dX > -0.01) dX = 0;
         if (dY < 0.01 && dY > -0.01) dY = 0;
 
-        std::cout << dX << " " << dY << "\n";
+        // std::cout << dX << " " << dY << "\n";
     }
     TDPlayerObject(const char *filePath) : object(filePath)
     {

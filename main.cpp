@@ -12,7 +12,6 @@
 // #include <ShadowSim.h>
 #include <mainGameState.h>
 
-
 GLFWwindow *window;
 int wWidth = 1920;
 int wHeight = 1080;
@@ -52,9 +51,8 @@ void init(GLFWwindow *window)
 
     if (!window)
     {
-        // Window or OpenGL context creation failed
-        std::cout << "Failed to create Window"
-                  << "\n";
+        
+        std::cout << "Failed to create Window\n";
     }
 
     glfwSetErrorCallback(error_callback);
@@ -79,11 +77,10 @@ void init(GLFWwindow *window)
 int main()
 {
 
-    if (!glfwInit()) 
+    if (!glfwInit())
     {
-        // Initialization failed
-        std::cout << "Init Failed"
-                  << "\n";
+        
+        std::cout << "Init Failed\n";
     }
 
     const GLFWvidmode *vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -97,12 +94,10 @@ int main()
     glBlendEquation(GL_FUNC_ADD); // this is default
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // gravSim state("./vertexShader.vs", "./fragmentShader.fs");
-    gameState state("./vertexShader.vs", "./fragmentShader.fs");
-    // shadowSim state("./vertexShader.vs", "./fragmentShader.fs");
-    
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
-    
+
+    gameState state("./vertexShader.vs", "./fragmentShader.fs");
 
     double delta = 0;
     double last = 0;
@@ -112,15 +107,14 @@ int main()
 
     glClearColor(0.2, 0.2, 0.2, 0.2);
     srand(time(NULL));
-    point vertexes[5000];
-    int numVertexesDrawn = 0;
 
     int cooldown = 0;
-    
+
     while (!glfwWindowShouldClose(window))
     {
         cooldown--;
-        glClear(GL_COLOR_BUFFER_BIT);
+        // glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         // Keep running
 
         glfwPollEvents();
@@ -129,7 +123,7 @@ int main()
         delta += time1 - last;
         if (delta > updateTime)
         {
-            //tick
+            // tick
             tick(window);
             state.tick(window);
             if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS)

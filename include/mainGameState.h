@@ -8,6 +8,7 @@
 #include <PlayerObject.h>
 #include <tileMap.h>
 #include <tdPlayer.h>
+#include <camera.h>
 
 
 
@@ -22,6 +23,7 @@ private:
     // PlayerObject player;
     TDPlayerObject player;
     tileMap map;
+    Camera camera;
     
 
 public:
@@ -38,12 +40,13 @@ void gameState::tick(GLFWwindow *window)
     map.xOffset = player.xOffset;
     map.yOffset = player.yOffset;
 
-    
+    camera.tick(window);
 }
 
 void gameState::render()
 {
     // rend.drawMap(map);
+    rend.setViewMat(camera.view);
     rend.render(player);
     
    
