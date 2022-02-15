@@ -63,7 +63,7 @@ void gameState::init()
 {
     map.loadMap("./map.rmap");
     test.loadTexture("./sand1.png");
-   loadObj("./data/square.obj");
+//    loadObj("./data/square.obj");
     
 }
 
