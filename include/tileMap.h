@@ -11,8 +11,7 @@ public:
     int height;
     float tWidth;
     float tHeight;
-    float xOffset = 0;
-    float yOffset = 0;
+    
     std::vector<int> map;
     std::vector<texture> tex;
     std::vector<std::vector<float>> vertices;
@@ -104,6 +103,15 @@ public:
                     vertices[i].push_back(0);
                     vertices[i].push_back(0);
 
+                    vertices[i].push_back(x + tWidth);
+                    vertices[i].push_back(y + tHeight);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+
                     vertices[i].push_back(x);
                     vertices[i].push_back(y + tHeight);
                     vertices[i].push_back(0.0);
@@ -112,6 +120,15 @@ public:
                     vertices[i].push_back(1);
                     vertices[i].push_back(0);
                     vertices[i].push_back(1);
+
+                    vertices[i].push_back(x);
+                    vertices[i].push_back(y);
+                    vertices[i].push_back(0.0);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(1);
+                    vertices[i].push_back(0);
+                    vertices[i].push_back(0);
 
 
                 }

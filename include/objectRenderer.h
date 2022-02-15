@@ -24,6 +24,8 @@ public:
     void drawCircle(circleObject c);
     void drawMap(tileMap m);
     void setViewMat(glm::mat4 view);
+    void drawRect(glm::mat4 trans, float verts[32]);
+    void renderMesh(float verts[], int size, glm::mat4 model);
 };
 
 objectRenderer::objectRenderer(const char *vertPath, const char *fragPath)
@@ -73,23 +75,28 @@ void objectRenderer::drawCircle(circleObject c)
 void objectRenderer::drawMap(tileMap m)
 {
 
-    // for (int i = 0; i < m.map.size(); i++)
-
-    // {
-    //     m.tex[m.map[i]].bind();
-    //     renderman.drawRectReadable(i % m.width * m.tWidth - m.xOffset, std::floor(float(i) / m.width) * m.tHeight - m.yOffset, m.tWidth, m.tHeight, 1, 1, 1);
-    // }
+    
 
     for (int i = 0; i < m.vertices.size(); i++)
     {
         m.tex[i].bind();
-        renderman.renderUnsizedArray(&m.vertices[i][0], m.vertices[i].size());
+        renderman.renderUnsizedArray(&m.vertices[i][0], m.vertices[i].size(), glm::mat4(1.0f));
     }
 }
 
 void objectRenderer::setViewMat(glm::mat4 view)
 {
     renderman.setViewMat(view);
+}
+
+void objectRenderer::drawRect(glm::mat4 trans, float verts[32])
+{
+    renderman.drawRect(verts, trans);
+}
+
+void objectRenderer::renderMesh(float verts[], int size, glm::mat4 model)
+{
+
 }
 
 #endif

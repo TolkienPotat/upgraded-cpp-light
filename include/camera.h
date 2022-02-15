@@ -25,6 +25,11 @@ private:
     float pitch = 0;
     glm::vec3 direction;
 
+    float wVel = 0;
+    float sVel = 0;
+    float aVel = 0;
+    float dVel = 0;
+
 public:
     glm::mat4 view;
     Camera(/* args */);
@@ -40,13 +45,42 @@ Camera::Camera(/* args */)
 void Camera::tick(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_W))
-        cameraPos += cameraSpeed * cameraFront;
+    {
+        wVel += 0.05;
+        cameraPos += cameraSpeed * wVel * cameraFront;
+    }
+    else 
+    {
+        wVel = 0;
+    }
     if (glfwGetKey(window, GLFW_KEY_S))
-        cameraPos -= cameraSpeed * cameraFront;
+    {
+        sVel += 0.05;
+
+        cameraPos -= cameraSpeed * sVel * cameraFront;
+    }
+    else 
+    {
+        sVel = 0;
+    }
     if (glfwGetKey(window, GLFW_KEY_A))
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    {
+        aVel += 0.05;
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * aVel;
+    }
+    else 
+    {
+        aVel = 0;
+    }
     if (glfwGetKey(window, GLFW_KEY_D))
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    {
+        dVel += 0.05;
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * dVel;
+    }
+    else 
+    {
+        dVel = 0;
+    }
 
     if (firstMouse) // initially set to true
     {
@@ -79,6 +113,12 @@ void Camera::tick(GLFWwindow *window)
 
     lastMouseX = mouseX;
     lastMouseY = mouseY;
+
+    if (wVel > 0) wVel -=0.02;
+    if (sVel > 0) sVel -=0.02;
+    if (aVel > 0) aVel -=0.02;
+    if (dVel > 0) dVel -=0.02;
+
 }
 
 Camera::~Camera()

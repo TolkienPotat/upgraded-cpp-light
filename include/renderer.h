@@ -58,9 +58,9 @@ private:
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(model));
 
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 1000.0f);
 
-        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(model));
+        setProjMat(projection);
     }
 
 public:
@@ -77,9 +77,10 @@ public:
     renderer();
     void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
-    void renderUnsizedArray(float arr[], int len);
+    void renderUnsizedArray(float arr[], int len, glm::mat4 model);
     void setViewMat(glm::mat4 view);
     void drawCube(glm::mat4 trans);
+    void setProjMat(glm::mat4 proj);
 
     float cubeVertices[288] = {
         -0.5f, -0.5f, -0.5f, 1, 1, 1, 0.0f, 0.0f,
@@ -189,7 +190,7 @@ void renderer::drawTriangle(vertex p1, vertex p2, vertex p3)
     glEnable(GL_TEXTURE_2D);
 }
 
-void renderer::drawRect(float verts[32], glm::mat4 trans = glm::mat4(1.0f))
+void renderer::drawRect(float verts[32], glm::mat4 trans)
 {
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), verts, GL_DYNAMIC_DRAW);
@@ -197,29 +198,11 @@ void renderer::drawRect(float verts[32], glm::mat4 trans = glm::mat4(1.0f))
     shader.use();
     glBindVertexArray(VAO);
 
-    glm::mat4 model = glm::mat4(1.0f);
-    // model = glm::rotate(model, glm::radians(320.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-    
-
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
     glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
-    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "trans"), 1, GL_FALSE, glm::value_ptr(trans));
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(trans));
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_DYNAMIC_DRAW);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
-
 void renderer::drawRectReadable(float x, float y, float width, float height, float r, float g, float b)
 {
 
@@ -230,10 +213,10 @@ void renderer::drawRectReadable(float x, float y, float width, float height, flo
         x, y, 0.0, r, g, b, 0.0, 0.0,
         x, y + height, 0.0, r, g, b, 0.0, 1.0};
 
-    drawRect(verts);
+    drawRect(verts, glm::mat4(1.0f));
 }
 
-void renderer::renderUnsizedArray(float arr[], int len)
+void renderer::renderUnsizedArray(float arr[], int len, glm::mat4 model)
 {
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -242,20 +225,32 @@ void renderer::renderUnsizedArray(float arr[], int len)
     glBindVertexArray(VAO);
 
     glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-    // glDrawElements(GL_TRIANGLES, len, GL_UNSIGNED_INT, 0);
+
     glDrawArrays(GL_TRIANGLES, 0, len);
 }
 
 void renderer::setViewMat(glm::mat4 view)
 {
     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
+}
+void renderer::setProjMat(glm::mat4 proj)
+{
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(proj));
 }
 
 void renderer::drawCube(glm::mat4 mat)
 {
-    
+
+    shader.use();
+    glBindVertexArray(VAO);
+
+    glUniform1i(glGetUniformLocation(shader.ID, "texEnabled"), 1);
+    glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(mat));
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_DYNAMIC_DRAW);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
 renderer::renderer()
