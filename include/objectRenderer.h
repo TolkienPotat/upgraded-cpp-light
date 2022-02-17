@@ -18,6 +18,7 @@ public:
     objectRenderer(const char *vertPath, const char *fragPath);
     ~objectRenderer();
     void render(object o);
+    void renderPlayer(object o);
     void setRenderRatio(float ratio);
     void drawTriangleStrip(vertex verts[], int size, float r, float g, float b);
     void drawTriangle(vertex p1, vertex p2, vertex p3);
@@ -49,9 +50,9 @@ void objectRenderer::drawTriangle(vertex p1, vertex p2, vertex p3)
     renderman.drawTriangle(p1, p2, p3);
 }
 
-void objectRenderer::setRenderRatio(float ratio)
+void objectRenderer::renderPlayer(object o)
 {
-    renderRatio = ratio;
+
 }
 
 void objectRenderer::render(object o)
