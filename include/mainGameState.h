@@ -55,9 +55,10 @@ void gameState::render()
     // rend.drawMap(map);
     rend.setViewMat(camera.view);
     rend.render(player);
+
     // rend.drawRect(glm::mat4(1.0f), verts);
                 rend.renderMesh(&vertices[0], vertices.size(), glm::mat4(1.0f));
-    
+
 }
 
 void gameState::init()
