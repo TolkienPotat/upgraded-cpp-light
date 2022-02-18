@@ -27,7 +27,6 @@ public:
         stream >> tWidth;
         stream >> tHeight;
 
-        std::cout << width << height << tWidth << tHeight << "\n";
 
         std::string temp;
         stream >> temp;
@@ -37,13 +36,11 @@ public:
         stream >> s;
         while (s != "DATA:")
         {
-            std::cout << s << "\n";
             const char *c = s.c_str();
             texture tt;
             tex.push_back(tt);
             tex[i].loadTexture(c);
             // std::getline(stream, s);
-            std::cout << tex.size() << "\n";
             stream >> s;
             i++;
         }
@@ -74,7 +71,6 @@ public:
                 if (map[j] == i)
                 {
                     float x = float(j % width) * tWidth;
-                    // std::cout << "X: " << x << "\n";
                     float y = std::floor(float(j) / width) * tHeight;
                     vertices[i].push_back(x + tWidth);
                     vertices[i].push_back(y + tHeight);
@@ -133,7 +129,6 @@ public:
 
                 }
             }
-        std::cout << vertices[i].size() << "\n";
         }
         return 1;
     }

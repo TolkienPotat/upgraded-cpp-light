@@ -97,7 +97,7 @@ void objectRenderer::drawRect(glm::mat4 trans, float verts[32])
 
 void objectRenderer::renderMesh(float verts[], int size, glm::mat4 model)
 {
-
+    renderman.renderUnsizedArray(verts, size, model);
 }
 
 #endif
