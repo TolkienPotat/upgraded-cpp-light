@@ -66,6 +66,7 @@ void gameState::init()
     map.loadMap("./map.rmap");
     test.loadTexture("./sand1.png");
    vertices = loadObj("./data/obj/shaefile.obj");
+   
    std::cout << vertices.size();
     
 }
@@ -73,7 +74,6 @@ void gameState::init()
 gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/block.png")
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
-    rend.setRenderRatio(renderRatio);
     
 
     init();
