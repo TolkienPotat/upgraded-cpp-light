@@ -5,7 +5,6 @@
 #include <circle.h>
 #include <vector>
 #include <algorithm>
-#include <PlayerObject.h>
 #include <tileMap.h>
 #include <tdPlayer.h>
 #include <camera.h>
@@ -22,7 +21,6 @@ private:
     /* data */
     
     float renderRatio;
-    // PlayerObject player;
     TDPlayerObject player;
     tileMap map;
     Camera camera;

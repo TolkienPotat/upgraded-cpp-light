@@ -3,7 +3,6 @@
 
 #include <glad/glad.h>
 #include <shader.h>
-#include <point.h>
 #include <vertex.h>
 #include <cstring>
 #include <glm/glm.hpp>
