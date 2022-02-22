@@ -3,7 +3,6 @@
 #define GRAVITY_CONST 0.00000000006674
 #include <iostream>
 #include <object.h>
-#include <point.h>
 #include <math.h>
 #include <vector>
 
