@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include <tileMap.h>
-#include <tdPlayer.h>
 #include <camera.h>
 #include <texture.h>
 #include <objLoader.h>
@@ -21,14 +20,10 @@ private:
     /* data */
     
     float renderRatio;
-    TDPlayerObject player;
     tileMap map;
     Camera camera;
     texture test;
-    float verts[32]{-100.0f, 0, -100.0f, 1, 1, 1, 0, 0,
-                    -100.0f, 0, 100.0f, 1, 1, 1, 0, 1,
-                    100.0f, 0, 100.0f, 1, 1, 1, 1, 1,
-                    100.0f, 0, -100.0f, 1, 1, 1, 1, 0};
+    
     std::vector<float> vertices;
     
 
@@ -42,7 +37,6 @@ public:
 
 void gameState::tick(GLFWwindow *window)
 {
-    player.tick(window);
   
 
     camera.tick(window);
@@ -50,11 +44,10 @@ void gameState::tick(GLFWwindow *window)
 
 void gameState::render()
 {
-    // rend.drawMap(map);
+    
     rend.setViewMat(camera.view);
-    rend.render(player);
 
-    // rend.drawRect(glm::mat4(1.0f), verts);
+    
                 rend.renderMesh(&vertices[0], vertices.size(), glm::mat4(1.0f));
 
 }
@@ -69,7 +62,7 @@ void gameState::init()
     
 }
 
-gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/block.png")
+gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     
