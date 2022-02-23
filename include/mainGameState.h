@@ -56,7 +56,7 @@ void gameState::init()
 {
     map.loadMap("./map.rmap");
     test.loadTexture("./sand1.png");
-   vertices = loadObj("./data/obj/shaefile.obj");
+   vertices = loadObj("./data/obj/tower.obj");
    
    std::cout << vertices.size();
     

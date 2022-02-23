@@ -59,7 +59,7 @@ void objectRenderer::render(object o)
 {
 
     o.bind();
-    renderman.drawRect(o.getVerts(), o.getTrans());
+    renderman.renderUnsizedArray(&o.getVerts()[0], o.getVerts().size(), o.getTrans());
     // renderman.drawRectReadable(o.getX(), o.getY(), float(o.getTexture().width) * o.getScale() * renderRatio, float(o.getTexture().height) * o.getScale(), 1.0f, 1.0f, 1.0f);
 }
 
