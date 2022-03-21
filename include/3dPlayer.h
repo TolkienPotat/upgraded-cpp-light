@@ -3,8 +3,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <objLoader.h>
 
+
 #ifndef PLAYER_H
 #define PLAYER_H
+
 
 class Player : public object
 {
@@ -24,6 +26,7 @@ public:
     ~Player() {}
     void tick(GLFWwindow *window, glm::vec3 camF);
     glm::vec3 getPosition();
+
 };
 
 void Player::tick(GLFWwindow *window, glm::vec3 camF)
