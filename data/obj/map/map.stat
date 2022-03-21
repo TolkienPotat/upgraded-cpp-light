@@ -1,0 +1,3 @@
+s ./img/man.png ./data/obj/map/b1.obj
+s ./img/block.png ./data/obj/map/plane.obj
+s ./img/sand1.png ./data/obj/tower.obj
