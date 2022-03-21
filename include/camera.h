@@ -4,6 +4,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <GLFW/glfw3.h>
 
+float cameraZoom = 2.0;
+void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+{
+    cameraZoom -= yoffset;
+    if (cameraZoom < 1) cameraZoom = 1;
+}
+
 class Camera
 {
 private:
@@ -34,55 +41,19 @@ public:
     glm::mat4 view;
     Camera(/* args */);
     ~Camera();
-    void tick(GLFWwindow *window);
+    void tick(GLFWwindow *window, glm::vec3 dir);
+    glm::vec3 getCameraF(){return cameraFront;};
 };
-
 Camera::Camera(/* args */)
 {
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }
 
-void Camera::tick(GLFWwindow *window)
+void Camera::tick(GLFWwindow *window, glm::vec3 dir)
 {
-    if (glfwGetKey(window, GLFW_KEY_W))
-    {
-        wVel += 0.05;
-        cameraPos += cameraSpeed * wVel * cameraFront;
-    }
-    else 
-    {
-        wVel = 0;
-    }
-    if (glfwGetKey(window, GLFW_KEY_S))
-    {
-        sVel += 0.05;
-
-        cameraPos -= cameraSpeed * sVel * cameraFront;
-    }
-    else 
-    {
-        sVel = 0;
-    }
-    if (glfwGetKey(window, GLFW_KEY_A))
-    {
-        aVel += 0.05;
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * aVel;
-    }
-    else 
-    {
-        aVel = 0;
-    }
-    if (glfwGetKey(window, GLFW_KEY_D))
-    {
-        dVel += 0.05;
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed * dVel;
-    }
-    else 
-    {
-        dVel = 0;
-    }
-
-    if (firstMouse) // initially set to true
+    glfwSetScrollCallback(window, scroll_callback);
+        
+        if (firstMouse) // initially set to true
     {
         lastMouseX = mouseX;
         lastMouseY = mouseY;
@@ -97,7 +68,7 @@ void Camera::tick(GLFWwindow *window)
     dY *= sensitivity;
 
     yaw += dX;
-    pitch += dY;
+    pitch -= dY;
 
     if (pitch > 89.0f)
         pitch = 89.0f;
@@ -108,17 +79,20 @@ void Camera::tick(GLFWwindow *window)
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
-
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    // view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    view = glm::lookAt(cameraFront * cameraZoom + dir, dir, cameraUp);
 
     lastMouseX = mouseX;
     lastMouseY = mouseY;
 
-    if (wVel > 0) wVel -=0.02;
-    if (sVel > 0) sVel -=0.02;
-    if (aVel > 0) aVel -=0.02;
-    if (dVel > 0) dVel -=0.02;
-
+    if (wVel > 0)
+        wVel -= 0.02;
+    if (sVel > 0)
+        sVel -= 0.02;
+    if (aVel > 0)
+        aVel -= 0.02;
+    if (dVel > 0)
+        dVel -= 0.02;
 }
 
 Camera::~Camera()

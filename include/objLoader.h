@@ -102,7 +102,10 @@ std::vector<float> loadObj(std::string path)
 
     }
     }
-    std::cout << line << "\n";
+    // std::cout << line << "\n";
+    vNormVec.clear();
+    tCoordVec.clear();
+    coordVec.clear();
     return res;
 }
 #endif

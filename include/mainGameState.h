@@ -9,7 +9,8 @@
 #include <camera.h>
 #include <texture.h>
 #include <objLoader.h>
-
+#include <3bMap.h>
+#include <3dPlayer.h>
 
 
 
@@ -20,11 +21,11 @@ private:
     /* data */
     
     float renderRatio;
-    tileMap map;
     Camera camera;
     texture test;
-    
+    DMap map;
     std::vector<float> vertices;
+    Player player;
     
 
 public:
@@ -37,32 +38,43 @@ public:
 
 void gameState::tick(GLFWwindow *window)
 {
-  
+  player.tick(window, camera.getCameraF());
 
-    camera.tick(window);
+    camera.tick(window, player.getPosition());
 }
 
 void gameState::render()
 {
     
     rend.setViewMat(camera.view);
+   
+    player.bind();
+    rend.renderMesh(&player.getVerts()[0], player.getVerts().size(), player.getTrans());
+    
+    test.bind();
+    glm::mat4 trans = glm::mat4(1.0f);
+    trans = glm::scale(trans, glm::vec3(10.0f));
+
+    rend.renderMesh(&vertices[0], vertices.size(), trans);
 
     
-                rend.renderMesh(&vertices[0], vertices.size(), glm::mat4(1.0f));
+    // for (int i = 0; i < map.data.size(); i++)
+    // {
+    //     rend.renderMesh(&map.data[i][0], map.data[i].size(), glm::mat4(1.0f));
+    // }
 
 }
 
 void gameState::init()
 {
-    map.loadMap("./map.rmap");
-    test.loadTexture("./sand1.png");
-   vertices = loadObj("./data/obj/tower.obj");
-   
-   std::cout << vertices.size();
+    test.loadTexture("./img/ground.png");
+   vertices = loadObj("./data/obj/plane.obj");
+   std::cout << vertices.size() << " = verts size\n";
+map.loadMap("./data/obj/map/map.stat");
     
 }
 
-gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath)
+gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/playerUV.png", "./data/obj/player.obj")
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     
