@@ -8,12 +8,14 @@
 #define PLAYER_H
 
 
+
 class Player : public object
 {
 private:
     float velAD = 0, velY = 0, velWS = 0;
     glm::vec3 position;
     glm::vec3 cameraUp;
+    float maxSpeed = 0.4;
 
 public:
     Player(const char *filepath, std::string meshPath) : object(filepath)
@@ -34,41 +36,41 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
 
     trans = glm::mat4(1.0f);
 
-    if (glfwGetKey(window, GLFW_KEY_W) && velWS < 1)
+    if (glfwGetKey(window, GLFW_KEY_W) && velWS < maxSpeed)
     {
-        velWS += 0.001;
+        velWS += 0.004;
     }
 
-    else if (glfwGetKey(window, GLFW_KEY_S))
+    else if (glfwGetKey(window, GLFW_KEY_S) && velWS > -maxSpeed)
     {
-        velWS -= 0.001;
+        velWS -= 0.004;
     }
     else
     {
         if (velWS > 0)
-            velWS -= 0.001;
+            velWS -= 0.006;
         if (velWS < 0)
-            velWS += 0.001;
+            velWS += 0.006;
         if (abs(velWS) < 0.01)
         {
             velWS = 0;
         }
     }
-
-    if (glfwGetKey(window, GLFW_KEY_A))
+    std::cout << velWS << "Vel. WS\n";
+    if (glfwGetKey(window, GLFW_KEY_A) && velAD > -maxSpeed)
     {
-        velAD -= 0.001;
+        velAD -= 0.004;
     }
-    else if (glfwGetKey(window, GLFW_KEY_D))
+    else if (glfwGetKey(window, GLFW_KEY_D) && velAD < maxSpeed)
     {
-        velAD += 0.001;
+        velAD += 0.004;
     }
     else
     {
         if (velAD > 0)
-            velAD -= 0.001;
+            velAD -= 0.006;
         if (velAD < 0)
-            velAD += 0.001;
+            velAD += 0.006;
         if (abs(velAD) < 0.01)
         {
             velAD = 0;
@@ -90,6 +92,7 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
         position.y = 0;
         velY = 0;
     }
+    camF = glm::normalize(camF);
     position -= glm::vec3(camF.x * velWS, 0, camF.z * velWS);
     position -= glm::normalize(glm::cross(glm::vec3(camF.x, 0, camF.z), cameraUp)) * velAD;
 

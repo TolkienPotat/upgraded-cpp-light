@@ -69,8 +69,7 @@ void gameState::init()
 {
     test.loadTexture("./img/ground.png");
    vertices = loadObj("./data/obj/plane.obj");
-   std::cout << vertices.size() << " = verts size\n";
-map.loadMap("./data/obj/map/map.stat");
+    map.loadMap("./data/obj/map/map.stat");
     
 }
 
