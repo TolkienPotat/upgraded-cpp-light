@@ -1,10 +1,12 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
 #include <object.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <objLoader.h>
+#include <AABB.h>
 
-#ifndef PLAYER_H
-#define PLAYER_H
 
 class Player : public object
 {
