@@ -18,7 +18,7 @@ public:
     AABB(glm::vec3 greatest, glm::vec3 lowest);
     ~AABB();
     int collidesWith(AABB obj);
-    AABB genFromObj(std::vector<float> object, int repeat);
+    static AABB genFromObj(std::vector<float> object, int repeat);
     void offset(glm::vec3 translate);
 };
 
@@ -40,7 +40,7 @@ int AABB::collidesWith(AABB obj)
     return 0;
 }
 
-AABB AABB::genFromObj(std::vector<float> object, int repeat)
+AABB AABB::genFromObj(std::vector<float> object, int repeat/*usually 8*/)
 {
 
     glm::vec3 v1;

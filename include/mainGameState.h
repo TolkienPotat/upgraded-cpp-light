@@ -26,6 +26,9 @@ private:
     DMap map;
     std::vector<float> vertices;
     Player player;
+
+    //test code
+    object collida;
     
 
 public:
@@ -50,6 +53,10 @@ void gameState::render()
    
     player.bind();
     rend.renderMesh(&player.getVerts()[0], player.getVerts().size(), player.getTrans());
+
+    //test code
+    collida.bind();
+    rend.renderMesh(&collida.getVerts()[0], collida.getVerts().size(), collida.getTrans());
     
     test.bind();
     glm::mat4 trans = glm::mat4(1.0f);
@@ -73,7 +80,8 @@ void gameState::init()
     
 }
 
-gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/playerUV.png", "./data/obj/player.obj")
+gameState::gameState(const char *vertPath, const char *fragPath) : state(vertPath, fragPath), player("./img/playerUV.png", "./data/obj/player.obj"), 
+/*test code*/ collida("./img/playerUV.png", "./data/obj/player.obj")
 {
     renderRatio = float(glfwGetVideoMode(glfwGetPrimaryMonitor())->height) / float(glfwGetVideoMode(glfwGetPrimaryMonitor())->width);
     

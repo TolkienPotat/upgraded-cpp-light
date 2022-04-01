@@ -8,6 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include <objLoader.h>
+#include <AABB.h>
 
 class object
 {
@@ -19,10 +21,13 @@ protected:
     int width, height;
     glm::mat4 trans;
     std::vector<float> vertices;
+    AABB box = AABB::genFromObj(vertices, 8);
 
+    //test code
+    glm::vec3 mover;
 
 public:
-    object(const char *filePath);
+    object(const char *filePath, std::string meshPath);
     ~object();
     void tick();
     void bind();
@@ -35,7 +40,7 @@ public:
     virtual void tick(GLFWwindow *window);
 };
 
-object::object(const char *filePath)
+object::object(const char *filePath, std::string meshPath)
 {
     t.loadTexture(filePath);
     width = t.width;
@@ -43,11 +48,17 @@ object::object(const char *filePath)
     std::cout << "created texture"
               << "\n";
 
+    trans = glm::mat4(1.0f);
+    vertices = loadObj(meshPath);
+
+
+    mover = glm::vec3(10.0f, 0.0f, 0.0f);
+    trans = glm::translate(trans, mover);
+    box.offset(mover);
+
     
-
-
-
-}
+    std::cout << "Created AABB bounding box" << std::endl;
+}   
 
 
 

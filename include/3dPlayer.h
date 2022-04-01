@@ -53,7 +53,7 @@ private:
     }
 
 public:
-    Player(const char *filepath, std::string meshPath) : object(filepath)
+    Player(const char *filepath, std::string meshPath) : object(filepath, meshPath)
     {
         trans = glm::mat4(1.0f);
         vertices = loadObj(meshPath);
@@ -132,6 +132,7 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
         position.y = 0;
         velY = 0;
     }
+
     float zxScale = sqrt((camF.length() * camF.length()) / (camF.x * camF.x + camF.z * camF.z));
     position -= glm::vec3(camF.x * zxScale * velWS, 0, camF.z * zxScale * velWS);
     position -= glm::normalize(glm::cross(glm::vec3(camF.x * zxScale, 0, camF.z * zxScale), cameraUp)) * velAD;
