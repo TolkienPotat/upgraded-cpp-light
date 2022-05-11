@@ -1,9 +1,14 @@
+#ifndef MAP_I
+#define MAP_I
+
 #include <iostream>
 #include <vector>
 #include <glm/glm.hpp>
 #include <sstream>
 #include <objLoader.h>
 #include <texture.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 
 class DMap
@@ -12,7 +17,9 @@ class DMap
 public:
 std::vector<std::vector<float>> data;
 std::vector<texture> textures;
-glm::mat4 model = glm::mat4(1.0f);
+std::vector<glm::mat4> transform;
+std::vector<std::string> texturePaths;
+
 
 int loadMap(std::string path)
 {
@@ -23,6 +30,7 @@ int loadMap(std::string path)
     {
         file >> line;
         texture t;
+        texturePaths.push_back(line);
         t.loadTexture(line.c_str());
         textures.push_back(t);
         file >> line;
@@ -30,15 +38,33 @@ int loadMap(std::string path)
         std::cout << temp.size() << "b\n";
         data.push_back(temp);
         file >> line;
+        glm::vec3 tVec;
+        tVec.x = std::stof(line);
+        file >> line;
+        tVec.y = std::stof(line);
+        file >> line;
+        tVec.z = std::stof(line);
+        transform.push_back(glm::translate(glm::mat4(1.0f), tVec));
+        file >> line;
     }
     return 1;
 
 }
 
-std::vector<float> getRender(int r)
+glm::mat4 getRender(int r)
 {
     textures[r].bind();
-    return data[r];
+    return transform[r];
+}
+
+void reloadTextures()
+{
+    for (int i = 0; i < textures.size(); i++)
+    {
+        textures[i].loadTexture(texturePaths[i].c_str());
+    }
 }
 
 };
+
+#endif

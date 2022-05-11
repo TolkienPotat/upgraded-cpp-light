@@ -1,3 +1,46 @@
-s ./img/man.png ./data/obj/map/b1.obj
-s ./img/block.png ./data/obj/map/plane.obj
-s ./img/sand1.png ./data/obj/tower.obj
+s ./img/wall.png ./data/obj/map/wall2.obj 0 0 0
+s ./img/wall.png ./data/obj/map/wall2.obj 6 0 0
+s ./img/wall.png ./data/obj/map/wall2.obj 12 0 0
+s ./img/wall.png ./data/obj/map/wall2.obj 18 0 0
+s ./img/wall.png ./data/obj/map/wall2.obj 24 0 0
+
+s ./img/wall.png ./data/obj/map/wall1.obj -3 0 3
+
+s ./img/wall.png ./data/obj/map/wall2.obj -6 0 6
+s ./img/wall.png ./data/obj/map/wall2.obj -12 0 6
+
+s ./img/wall.png ./data/obj/map/wall1.obj -15 0 9
+s ./img/wall.png ./data/obj/map/wall1.obj -15 0 15
+
+s ./img/wall.png ./data/obj/map/wall2.obj -6 0 18
+s ./img/wall.png ./data/obj/map/wall2.obj -12 0 18
+s ./img/wall.png ./data/obj/map/wall2.obj 0 0 18
+s ./img/wall.png ./data/obj/map/wall2.obj 6 0 18
+s ./img/wall.png ./data/obj/map/wall2.obj 12 0 18
+
+s ./img/wall.png ./data/obj/map/wall2.obj 24 0 18
+
+s ./img/wall.png ./data/obj/map/wall1.obj 27 0 9
+s ./img/wall.png ./data/obj/map/wall1.obj 27 0 15
+
+s ./img/floor.png ./data/obj/map/floor.obj 0 0 3
+s ./img/floor.png ./data/obj/map/floor.obj 6 0 3
+s ./img/floor.png ./data/obj/map/floor.obj 12 0 3
+s ./img/floor.png ./data/obj/map/floor.obj 18 0 3
+s ./img/floor.png ./data/obj/map/floor.obj 24 0 3
+
+s ./img/floor.png ./data/obj/map/floor.obj -12 0 9
+s ./img/floor.png ./data/obj/map/floor.obj -6 0 9
+s ./img/floor.png ./data/obj/map/floor.obj 0 0 9
+s ./img/floor.png ./data/obj/map/floor.obj 6 0 9
+s ./img/floor.png ./data/obj/map/floor.obj 12 0 9
+s ./img/floor.png ./data/obj/map/floor.obj 18 0 9
+s ./img/floor.png ./data/obj/map/floor.obj 24 0 9
+
+s ./img/floor.png ./data/obj/map/floor.obj -12 0 15
+s ./img/floor.png ./data/obj/map/floor.obj -6 0 15
+s ./img/floor.png ./data/obj/map/floor.obj 0 0 15
+s ./img/floor.png ./data/obj/map/floor.obj 6 0 15
+s ./img/floor.png ./data/obj/map/floor.obj 12 0 15
+s ./img/floor.png ./data/obj/map/floor.obj 18 0 15
+s ./img/floor.png ./data/obj/map/floor.obj 24 0 15
