@@ -1,8 +1,10 @@
 #version 330 core
 
+
+
 in vec4 ourColor;
 in vec2 texCoord;
-layout (origin_upper_left) in vec4 gl_FragCoord;
+ in vec4 gl_FragCoord;
 
 
 out vec4 FragColor;
@@ -14,7 +16,10 @@ uniform sampler2D texture2;
 void main()
 {
     
-    
+    // vec2 newUV = vec2(0.0, 0.0);
+    // newUV.x = texCoord.x - mod(texCoord.x, 0.1);
+    // newUV.y = texCoord.y - mod(texCoord.y, 0.1);
+
     
     
     if(texEnabled == 1)

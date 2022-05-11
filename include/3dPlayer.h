@@ -18,6 +18,8 @@ private:
     // glm::vec3 currentRotation = glm::vec3(1.0f);
     float currentRotation, targetRotation = 0;
 
+    glm::vec3 cameraFocus = glm::vec3(0.0f, 5.0f, 0.0f);
+
     glm::vec3 smoothLinterp(glm::vec3 begin, glm::vec3 end)
     {
         float delX = 0.00001f * (end.x - begin.x);
@@ -61,6 +63,12 @@ public:
     ~Player() {}
     void tick(GLFWwindow *window, glm::vec3 camF);
     glm::vec3 getPosition();
+    glm::vec3 getVel();
+    glm::vec3 getCamFoc();
+    void setVel(glm::vec3 t);
+    void setPos(glm::vec3 t);
+    void updatePos(glm::vec3 t);
+    void updateVel(glm::vec3 t);
 };
 
 void Player::tick(GLFWwindow *window, glm::vec3 camF)
@@ -97,19 +105,13 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
     }
     if (!keyDown)
     {
-        // if (velA.z > 0)
-        //     velA.z -= 0.002*;
-        // if (velA.z < 0)
-        //     velA.z += 0.002;
+       
         if (abs(velA.z) < 0.01 && abs(velA.x) < 0.01)
         {
             velA.z = 0;
             velA.x = 0;
         }
-        // if (velA.x > 0)
-        //     velA.x -= 0.002;
-        // if (velA.x < 0)
-        //     velA.x += 0.002;
+        
         
         velA.x *= 0.97;
         velA.z *= 0.97;
@@ -133,13 +135,8 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
     velA.x -= camF.x * zxScale * wsD;
     velA.z -= camF.z * zxScale * wsD;
     velA -= glm::normalize(glm::cross(glm::vec3(camF.x * zxScale, 0, camF.z * zxScale), cameraUp)) * adD;
-    // position -= glm::vec3(camF.x * zxScale * velWS, 0, camF.z * zxScale * velWS);
-    // position -= glm::normalize(glm::cross(glm::vec3(camF.x * zxScale, 0, camF.z * zxScale), cameraUp)) * velAD;
-    if (velA.length() > 0.5)
-        std::cout << "X: " << velA.x << ", Len: " << velA.length() << ", Z: " << velA.z << "\n";
     position += velA;
     trans = glm::translate(trans, position);
-    // currentRotation = smoothLinterp(currentRotation, lCamDef);
     currentRotation = smoothLinterpF(currentRotation, targetRotation);
 
     trans = glm::rotate(trans, currentRotation, glm::vec3(0, 1, 0));
@@ -148,6 +145,36 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
 glm::vec3 Player::getPosition()
 {
     return position;
+}
+
+glm::vec3 Player::getVel()
+{
+    return velA;
+}
+
+glm::vec3 Player::getCamFoc()
+{
+    return cameraFocus;
+}
+
+void Player::setPos(glm::vec3 t)
+{
+    position = t;
+}
+
+void Player::setVel(glm::vec3 t)
+{
+    velA = t;
+}
+
+void Player::updatePos(glm::vec3 t)
+{
+    position += t;
+}
+
+void Player::updateVel(glm::vec3 t)
+{
+    velA += t;
 }
 
 #endif
