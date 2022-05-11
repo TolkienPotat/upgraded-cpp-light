@@ -24,7 +24,6 @@ private:
     Camera camera;
     texture test;
     DMap map;
-    std::vector<float> vertices;
     Player player;
     
 
@@ -40,7 +39,7 @@ void gameState::tick(GLFWwindow *window)
 {
   player.tick(window, camera.getCameraF());
 
-    camera.tick(window, player.getPosition());
+    camera.tick(window, player.getPosition() + player.getCamFoc());
 }
 
 void gameState::render()
@@ -55,20 +54,19 @@ void gameState::render()
     glm::mat4 trans = glm::mat4(1.0f);
     trans = glm::scale(trans, glm::vec3(10.0f));
 
-    rend.renderMesh(&vertices[0], vertices.size(), trans);
 
     
-    // for (int i = 0; i < map.data.size(); i++)
-    // {
-    //     rend.renderMesh(&map.data[i][0], map.data[i].size(), glm::mat4(1.0f));
-    // }
+    for (int i = 0; i < map.data.size(); i++)
+    {
+        
+        rend.renderMesh(&map.data[i][0], map.data[i].size(), map.getRender(i));
+    }
 
 }
 
 void gameState::init()
 {
     test.loadTexture("./img/ground.png");
-   vertices = loadObj("./data/obj/plane.obj");
     map.loadMap("./data/obj/map/map.stat");
     
 }
