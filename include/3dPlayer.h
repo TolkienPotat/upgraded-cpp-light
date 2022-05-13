@@ -7,17 +7,18 @@
 #include <objLoader.h>
 #include <AABB.h>
 
-
 class Player : public object
 {
 private:
-    float velAD = 0, velY = 0, velWS = 0;
+    glm::vec3 velA = glm::vec3(0.0f);
     glm::vec3 position;
     glm::vec3 cameraUp;
     float maxSpeed = 0.4;
     glm::vec3 lCamDef = glm::vec3(1.0f);
     // glm::vec3 currentRotation = glm::vec3(1.0f);
     float currentRotation, targetRotation = 0;
+
+    glm::vec3 cameraFocus = glm::vec3(0.0f, 5.0f, 0.0f);
 
     glm::vec3 smoothLinterp(glm::vec3 begin, glm::vec3 end)
     {
@@ -30,25 +31,24 @@ private:
     }
     float smoothLinterpF(float begin, float end)
     {
-        while (begin > 2.0f*M_PI)
+        while (begin > 2.0f * M_PI)
         {
-            begin -= 2.0f*M_PI;
+            begin -= 2.0f * M_PI;
         }
-        while (end > 2.0f*M_PI)
+        while (end > 2.0f * M_PI)
         {
-            end -= 2.0f*M_PI;
+            end -= 2.0f * M_PI;
         }
-        
-       
+
         if (abs(end - begin) > M_PI)
         {
-            end = -(M_PI*2 - end);
+            end = -(M_PI * 2 - end);
         }
         if (end - begin > 3)
         {
             std::cout << begin << " Is begin, " << end << " Is end.\n";
         }
-        begin += 0.1* (end - begin);
+        begin += 0.1 * (end - begin);
         return begin;
     }
 
@@ -63,82 +63,80 @@ public:
     ~Player() {}
     void tick(GLFWwindow *window, glm::vec3 camF);
     glm::vec3 getPosition();
+    glm::vec3 getVel();
+    glm::vec3 getCamFoc();
+    void setVel(glm::vec3 t);
+    void setPos(glm::vec3 t);
+    void updatePos(glm::vec3 t);
+    void updateVel(glm::vec3 t);
 };
 
 void Player::tick(GLFWwindow *window, glm::vec3 camF)
 {
 
     trans = glm::mat4(1.0f);
-
-    if (glfwGetKey(window, GLFW_KEY_W) && velWS < maxSpeed)
+    float wsD, adD = 0;
+    bool keyDown = false;
+    if (glfwGetKey(window, GLFW_KEY_W) && glm::length(velA) < maxSpeed)
     {
-        velWS += 0.004;
+        wsD += 0.004;
         targetRotation = atan2(camF.x, camF.z);
+        keyDown = true;
     }
 
-    else if (glfwGetKey(window, GLFW_KEY_S) && velWS > -maxSpeed)
+    else if (glfwGetKey(window, GLFW_KEY_S) && glm::length(velA) < maxSpeed)
     {
-        velWS -= 0.004;
+        wsD -= 0.004;
         targetRotation = atan2(camF.x, camF.z);
-
+        keyDown = true;
     }
-    else
+
+    if (glfwGetKey(window, GLFW_KEY_A) && glm::length(velA) < maxSpeed)
     {
-        if (velWS > 0)
-            velWS -= 0.006;
-        if (velWS < 0)
-            velWS += 0.006;
-        if (abs(velWS) < 0.01)
+        adD -= 0.004;
+        targetRotation = atan2(camF.x, camF.z);
+        keyDown = true;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_D) && glm::length(velA) < maxSpeed)
+    {
+        adD += 0.004;
+        targetRotation = atan2(camF.x, camF.z);
+        keyDown = true;
+    }
+    if (!keyDown)
+    {
+       
+        if (abs(velA.z) < 0.01 && abs(velA.x) < 0.01)
         {
-            velWS = 0;
+            velA.z = 0;
+            velA.x = 0;
         }
+        
+        
+        velA.x *= 0.97;
+        velA.z *= 0.97;
     }
-    if (glfwGetKey(window, GLFW_KEY_A) && velAD > -maxSpeed)
+    if (glfwGetKey(window, GLFW_KEY_SPACE) && abs(velA.y) < 0.005)
     {
-        velAD -= 0.004;
-        targetRotation = atan2(camF.x, camF.z);
-
-    }
-    else if (glfwGetKey(window, GLFW_KEY_D) && velAD < maxSpeed)
-    {
-        velAD += 0.004;
-        targetRotation = atan2(camF.x, camF.z);
-
-    }
-    else
-    {
-        if (velAD > 0)
-            velAD -= 0.006;
-        if (velAD < 0)
-            velAD += 0.006;
-        if (abs(velAD) < 0.01)
-        {
-            velAD = 0;
-        }
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_SPACE) && abs(velY) < 0.005)
-    {
-        velY += 0.3;
+        velA.y += 0.3;
     }
     else if (position.y > 0)
     {
-        velY -= 0.50 / 60.0f;
+        velA.y -= 0.50 / 60.0f;
     }
 
-    position.y += velY;
+    position.y += velA.y;
     if (position.y < 0)
     {
         position.y = 0;
-        velY = 0;
+        velA.y = 0;
     }
-
-    float zxScale = sqrt((camF.length() * camF.length()) / (camF.x * camF.x + camF.z * camF.z));
-    position -= glm::vec3(camF.x * zxScale * velWS, 0, camF.z * zxScale * velWS);
-    position -= glm::normalize(glm::cross(glm::vec3(camF.x * zxScale, 0, camF.z * zxScale), cameraUp)) * velAD;
-
+    float zxScale = sqrt((glm::length(camF) * glm::length(camF)) / (camF.x * camF.x + camF.z * camF.z));
+    velA.x -= camF.x * zxScale * wsD;
+    velA.z -= camF.z * zxScale * wsD;
+    velA -= glm::normalize(glm::cross(glm::vec3(camF.x * zxScale, 0, camF.z * zxScale), cameraUp)) * adD;
+    position += velA;
     trans = glm::translate(trans, position);
-    // currentRotation = smoothLinterp(currentRotation, lCamDef);
     currentRotation = smoothLinterpF(currentRotation, targetRotation);
 
     trans = glm::rotate(trans, currentRotation, glm::vec3(0, 1, 0));
@@ -147,6 +145,36 @@ void Player::tick(GLFWwindow *window, glm::vec3 camF)
 glm::vec3 Player::getPosition()
 {
     return position;
+}
+
+glm::vec3 Player::getVel()
+{
+    return velA;
+}
+
+glm::vec3 Player::getCamFoc()
+{
+    return cameraFocus;
+}
+
+void Player::setPos(glm::vec3 t)
+{
+    position = t;
+}
+
+void Player::setVel(glm::vec3 t)
+{
+    velA = t;
+}
+
+void Player::updatePos(glm::vec3 t)
+{
+    position += t;
+}
+
+void Player::updateVel(glm::vec3 t)
+{
+    velA += t;
 }
 
 #endif

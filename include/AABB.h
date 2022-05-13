@@ -16,6 +16,7 @@ private:
 
 public:
     AABB(glm::vec3 greatest, glm::vec3 lowest);
+    AABB();
     ~AABB();
     int collidesWith(AABB obj);
     static AABB genFromObj(std::vector<float> object, int repeat);
@@ -30,6 +31,10 @@ AABB::AABB(glm::vec3 greatest, glm::vec3 lowest)
 
 AABB::~AABB()
 {
+}
+
+AABB::AABB(){
+    
 }
 
 int AABB::collidesWith(AABB obj)
